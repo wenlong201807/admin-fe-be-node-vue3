@@ -61,10 +61,10 @@
 </template>
 
 <script>
-import TreeMenu from "./TreeMenu.vue";
-import BreadCrumb from "./BreadCrumb.vue";
+import TreeMenu from './TreeMenu.vue';
+import BreadCrumb from './BreadCrumb.vue';
 export default {
-  name: "Home",
+  name: 'Home',
   components: { TreeMenu, BreadCrumb },
   data() {
     return {
@@ -89,15 +89,15 @@ export default {
       this.isCollapse = !this.isCollapse;
     },
     handleLogout(key) {
-      if (key == "email") return;
-      this.$store.commit("saveUserInfo", "");
+      if (key == 'email') return;
+      this.$store.commit('saveUserInfo', '');
       this.userInfo = {};
-      this.$router.push("/login");
+      this.$router.push('/login');
     },
     async getNoticeCount() {
       try {
         const count = await this.$api.noticeCount();
-        this.$store.commit("saveNoticeCount", count);
+        this.$store.commit('saveNoticeCount', count);
       } catch (error) {
         console.error(error);
       }
@@ -105,8 +105,8 @@ export default {
     async getMenuList() {
       try {
         const { menuList, actionList } = await this.$api.getPermissionList();
-        this.$store.commit("saveMenuList", menuList);
-        this.$store.commit("saveActionList", actionList);
+        this.$store.commit('saveMenuList', menuList);
+        this.$store.commit('saveActionList', actionList);
         this.userMenu = menuList;
       } catch (error) {
         console.error(error);
@@ -116,7 +116,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .basic-layout {
   position: relative;
   .nav-side {
