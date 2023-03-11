@@ -32,8 +32,8 @@ router.post('/login', async (ctx) => {
     );
 
     if (res) {
-      const data = res._doc;
-
+      const data = res._doc; // 这些是数据库返回的 ._doc 信息，也是前端需要的数据信息
+      // 登陆成功后生成token
       const token = jwt.sign(
         {
           data,
