@@ -19,6 +19,7 @@ const leave = require('./routes/leave')
 // error handler
 onerror(app)
 
+// 连接数据库
 require('./config/db')
 
 // middlewares

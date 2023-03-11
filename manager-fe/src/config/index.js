@@ -17,11 +17,11 @@ const EnvConfig = {
     baseApi: '//futurefe.com/api',
     mockApi:
       'https://www.fastmock.site/mock/c1c302e8baed9894c48c17e4738c092e/api',
-  },
+  }, 
 };
 export default {
   env,
-  mock: false,
+  mock: false, // false 链接数据卡， true 链接mock数据库
   namespace: 'manager',
   ...EnvConfig[env],
 };
