@@ -15,7 +15,6 @@ router.prefix('/users');
 router.post('/login', async (ctx) => {
   try {
     const { userName, userPwd } = ctx.request.body; // post 参数获取方式
-    debugger
     /**
      * 返回数据库指定字段，有三种方式
      * 1. 'userId userName userEmail state role deptId roleList'

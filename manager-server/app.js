@@ -39,8 +39,8 @@ app.use(views(__dirname + '/views', {
 
 // logger
 app.use(async (ctx, next) => {
-  log4js.info(`get params:${JSON.stringify(ctx.request.query)}`)
-  log4js.info(`post params:${JSON.stringify(ctx.request.body)}`)
+  log4js.info(`参数: get params:${JSON.stringify(ctx.request.query, null, 2)}`)
+  log4js.info(`参数: post params:${JSON.stringify(ctx.request.body, null, 2)}`)
   await next().catch((err) => {
     if (err.status == '401') {
       ctx.status = 200; // 重置状态码
