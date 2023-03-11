@@ -144,10 +144,10 @@
   </div>
 </template>
 <script>
-import { getCurrentInstance, onMounted, reactive, ref, toRaw } from "vue";
-import utils from "./../utils/utils";
+import { getCurrentInstance, onMounted, reactive, ref, toRaw } from 'vue';
+import utils from './../utils/utils';
 export default {
-  name: "user",
+  name: 'user',
   setup() {
     //   获取Composition API 上下文对象
     const { ctx } = getCurrentInstance();
@@ -175,80 +175,80 @@ export default {
     // 所有部门列表
     const deptList = ref([]);
     // 定义用户操作行为
-    const action = ref("add");
+    const action = ref('add');
     // 定义表单校验规则
     const rules = reactive({
       userName: [
         {
           required: true,
-          message: "请输入用户名称",
-          trigger: "blur",
+          message: '请输入用户名称',
+          trigger: 'blur',
         },
       ],
       userEmail: [
-        { required: true, message: "请输入用户邮箱", trigger: "blur" },
+        { required: true, message: '请输入用户邮箱', trigger: 'blur' },
       ],
       mobile: [
         {
           pattern: /1[3-9]\d{9}/,
-          message: "请输入正确的手机号格式",
-          trigger: "blur",
+          message: '请输入正确的手机号格式',
+          trigger: 'blur',
         },
       ],
       deptId: [
         {
           required: true,
-          message: "请输入用户邮箱",
-          trigger: "blur",
+          message: '请输入用户邮箱',
+          trigger: 'blur',
         },
       ],
     });
     // 定义动态表格-格式
     const columns = reactive([
       {
-        label: "用户ID",
-        prop: "userId",
+        label: '用户ID',
+        prop: 'userId',
       },
       {
-        label: "用户名",
-        prop: "userName",
+        label: '用户名',
+        prop: 'userName',
       },
       {
-        label: "用户邮箱",
-        prop: "userEmail",
+        label: '用户邮箱',
+        prop: 'userEmail',
       },
       {
-        label: "用户角色",
-        prop: "role",
+        label: '用户角色',
+        prop: 'role',
         formatter(row, column, value) {
           return {
-            0: "管理员",
-            1: "普通用户",
+            0: '管理员',
+            1: '普通用户',
           }[value];
         },
       },
       {
-        label: "用户状态",
-        prop: "state",
+        label: '用户状态',
+        prop: 'state',
         formatter(row, column, value) {
           return {
-            1: "在职",
-            2: "离职",
-            3: "试用期",
+            1: '在职',
+            2: '离职',
+            3: '试用期',
           }[value];
         },
       },
       {
-        label: "注册时间",
-        prop: "createTime",
+        label: '注册时间',
+        prop: 'createTime',
         width: 180,
         formatter: (row, column, value) => {
           return utils.formateDate(new Date(value));
         },
       },
       {
-        label: "最后登录时间",
-        prop: "lastLoginTime",
+        label: '最后登录时间',
+        prop: 'lastLoginTime',
         width: 180,
         formatter: (row, column, value) => {
           return utils.formateDate(new Date(value));
@@ -288,23 +288,23 @@ export default {
       await ctx.$api.userDel({
         userIds: [row.userId], //可单个删除，也可批量删除
       });
-      ctx.$message.success("删除成功");
+      ctx.$message.success('删除成功');
       getUserList();
     };
     // 批量删除
     const handlePatchDel = async () => {
       if (checkedUserIds.value.length == 0) {
-        ctx.$message.error("请选择要删除的用户");
+        ctx.$message.error('请选择要删除的用户');
         return;
       }
       const res = await ctx.$api.userDel({
         userIds: checkedUserIds.value, //可单个删除，也可批量删除
       });
       if (res.nModified > 0) {
-        ctx.$message.success("删除成功");
+        ctx.$message.success('删除成功');
         getUserList();
       } else {
-        ctx.$message.success("修改失败");
+        ctx.$message.success('修改失败');
       }
     };
 
@@ -318,7 +318,7 @@ export default {
     };
     // 用户新增
     const handleCreate = () => {
-      action.value = "add";
+      action.value = 'add';
       showModal.value = true;
     };
 
@@ -335,26 +335,26 @@ export default {
     // 用户弹窗关闭
     const handleClose = () => {
       showModal.value = false;
-      handleReset("dialogForm");
+      handleReset('dialogForm');
     };
     // 用户提交
     const handleSubmit = () => {
       ctx.$refs.dialogForm.validate(async (valid) => {
         if (valid) {
           let params = toRaw(userForm);
-          params.userEmail += "@imooc.com";
+          params.userEmail += '@imooc.com';
           params.action = action.value;
           let res = await ctx.$api.userSubmit(params);
           showModal.value = false;
-          ctx.$message.success("用户创建成功");
-          handleReset("dialogForm");
+          ctx.$message.success('用户创建成功');
+          handleReset('dialogForm');
           getUserList();
         }
       });
     };
     // 用户编辑
     const handleEdit = (row) => {
-      action.value = "edit";
+      action.value = 'edit';
       showModal.value = true;
       ctx.$nextTick(() => {
         Object.assign(userForm, row);
@@ -390,5 +390,4 @@ export default {
 };
 </script>
 
-<style lang="scss">
-</style>
+<style lang="scss"></style>
