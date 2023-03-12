@@ -2,7 +2,7 @@ import { createRouter, createWebHashHistory } from 'vue-router';
 import Home from '@/components/Home.vue';
 import storage from './../utils/storage';
 import API from './../api';
-import utils from './../utils/utils';
+import utils from '../utils/utils';
 
 const routes = [
   {
@@ -24,35 +24,35 @@ const routes = [
       },
       {
         name: 'system/user',
-        path: 'system/user',
+        path: '/system/user',
         meta: {
           title: '用户管理',
         },
-        component: () => import('@/views/User.vue'),
+        component: () => import('../views/dynamic/User.vue'),
       },
       {
         name: 'system/menu',
-        path: 'system/menu',
+        path: '/system/menu',
         meta: {
           title: '菜单管理',
         },
-        component: () => import('@/views/Menu.vue'),
+        component: () => import('../views/dynamic/Menu.vue'),
       },
       {
         name: 'system/role',
-        path: 'system/role',
+        path: '/system/role',
         meta: {
           title: '角色管理',
         },
-        component: () => import('@/views/Role.vue'),
+        component: () => import('../views/dynamic/Role.vue'),
       },
       {
         name: 'system/dept',
-        path: 'system/dept',
+        path: '/system/dept',
         meta: {
           title: '部门管理',
         },
-        component: () => import('@/views/Dept.vue'),
+        component: () => import('../views/dynamic/Dept.vue'),
       },
       {
         name: 'audit/leave',
@@ -60,7 +60,7 @@ const routes = [
         meta: {
           title: '休假审批',
         },
-        component: () => import('@/views/Leave.vue'),
+        component: () => import('../views/dynamic/Leave.vue'),
       },
       {
         name: 'audit/approve',
@@ -68,7 +68,7 @@ const routes = [
         meta: {
           title: '待我审批',
         },
-        component: () => import('@/views/Approve.vue'),
+        component: () => import('../views/dynamic/Approve.vue'),
       },
     ],
   },
@@ -101,15 +101,17 @@ async function loadAsyncRoutes() {
       const { menuList } = await API.getPermissionList();
       let routes = utils.generateRoute(menuList);
       // TODO 动态菜单有问题
-      const modules = import.meta.glob('@/views/*.vue');
-      console.log('动态菜单:', routes);
+      // const modules = import.meta.glob('../views/dynamic/*.vue');
+      // // const modules = { "../views/404.vue": () => import("/src/views/404.vue"),
+      // console.log('modules动态菜单:', modules);
+      // console.log('动态菜单:', routes);
 
-      routes.map((route) => {
-        let url = `@/views/${route.component}.vue`;
-        route.component = modules[url];
-        // route.component = () => /* @vite-ignore */ import(url);
-        router.addRoute('home', route);
-      });
+      // routes.map((route) => {
+      //   let url = `../views/dynamic/${route.component}.vue`;
+      //   console.log('modules[url]动态菜单:', modules[url]);
+      //   route.component = modules[url];
+      //   router.addRoute('home', route);
+      // });
 
       // 导航守卫
       router.beforeEach((to, from, next) => {

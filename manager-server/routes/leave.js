@@ -76,6 +76,8 @@ router.post('/operate', async (ctx) => {
     const total = await Leave.countDocuments();
     params.orderNo = orderNo + total;
 
+    // TODO 此关系表需要捋顺
+
     // 获取用户当前部门ID
     let id = data.deptId.pop();
     // 查找负责人信息

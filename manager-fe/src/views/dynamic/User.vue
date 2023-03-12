@@ -145,12 +145,12 @@
 </template>
 <script>
 import { getCurrentInstance, onMounted, reactive, ref, toRaw } from 'vue';
-import utils from './../utils/utils';
+import utils from '@/utils/utils';
 export default {
   name: 'user',
   setup() {
     //   获取Composition API 上下文对象
-    const { ctx } = getCurrentInstance();
+    const { ctx, proxy } = getCurrentInstance();
     // 初始化用户表单对象
     const user = reactive({
       state: 1,
@@ -256,16 +256,17 @@ export default {
       },
     ]);
     // 初始化接口调用
-    onMounted(() => {
-      getUserList();
-      getDeptList();
-      getRoleAllList();
+    onMounted(async () => {
+      await getUserList();
+      await getDeptList();
+      await getRoleAllList();
     });
     // 获取用户列表
     const getUserList = async () => {
       let params = { ...user, ...pager };
       try {
-        const { list, page } = await ctx.$api.getUserList(params);
+        console.log('ctx.$api:22', ctx.$api);
+        const { list, page } = await proxy.$api.getUserList(params);
         userList.value = list;
         pager.total = page.total;
       } catch (error) {}
@@ -285,7 +286,7 @@ export default {
     };
     // 用户单个删除
     const handleDel = async (row) => {
-      await ctx.$api.userDel({
+      await proxy.$api.userDel({
         userIds: [row.userId], //可单个删除，也可批量删除
       });
       ctx.$message.success('删除成功');
@@ -297,7 +298,7 @@ export default {
         ctx.$message.error('请选择要删除的用户');
         return;
       }
-      const res = await ctx.$api.userDel({
+      const res = await proxy.$api.userDel({
         userIds: checkedUserIds.value, //可单个删除，也可批量删除
       });
       if (res.nModified > 0) {
@@ -323,13 +324,13 @@ export default {
     };
 
     const getDeptList = async () => {
-      let list = await ctx.$api.getDeptList();
+      let list = await proxy.$api.getDeptList();
       deptList.value = list;
     };
 
     // 角色列表查询
     const getRoleAllList = async () => {
-      let list = await ctx.$api.getRoleAllList();
+      let list = await proxy.$api.getRoleAllList();
       roleList.value = list;
     };
     // 用户弹窗关闭
@@ -342,9 +343,9 @@ export default {
       ctx.$refs.dialogForm.validate(async (valid) => {
         if (valid) {
           let params = toRaw(userForm);
-          params.userEmail += '@imooc.com';
+          params.userEmail += '@qq.com';
           params.action = action.value;
-          let res = await ctx.$api.userSubmit(params);
+          let res = await proxy.$api.userSubmit(params);
           showModal.value = false;
           ctx.$message.success('用户创建成功');
           handleReset('dialogForm');

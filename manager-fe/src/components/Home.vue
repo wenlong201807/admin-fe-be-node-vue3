@@ -37,17 +37,17 @@
           >
             <i class="el-icon-bell"></i>
           </el-badge>
-          <el-dropdown @command="handleLogout">
+          <el-dropdown>
             <span class="user-link">
               {{ userInfo.userName }}
               <i class="el-icon--right"></i>
             </span>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item command="email"
+                <el-dropdown-item
                   >邮箱：{{ userInfo.userEmail }}</el-dropdown-item
                 >
-                <el-dropdown-item command="logout">退出</el-dropdown-item>
+                <el-dropdown-item @click="handleLogout">退出</el-dropdown-item>
               </el-dropdown-menu>
             </template>
           </el-dropdown>

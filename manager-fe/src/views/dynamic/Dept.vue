@@ -81,7 +81,7 @@
               :key="item.userId"
               :label="item.userName"
               :value="`${item.userId}/${item.userName}/${item.userEmail}`"
-            ></el-option>
+              ></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="负责人邮箱" prop="userEmail">
@@ -192,7 +192,8 @@ export default {
       this.showModal = true;
       this.$nextTick(() => {
         Object.assign(this.deptForm, row, {
-          user: `${row.userId}/${row.userName}/${row.userEmail}`,
+          user: `${row.userName}`,
+          // user: `${row.userId}/${row.userName}/${row.userEmail}`,
         });
       });
     },

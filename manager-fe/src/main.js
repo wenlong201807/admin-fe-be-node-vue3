@@ -26,8 +26,8 @@ app.directive('has', {
     }
   },
 });
-
+console.log('api:', api);
 app.config.globalProperties.$request = request;
-app.config.globalProperties.$api = api;
+app.config.globalProperties.$api =  api;
 app.config.globalProperties.$storage = storage;
 app.use(router).use(store).use(ElementPlus, { size: 'small' }).mount('#app');

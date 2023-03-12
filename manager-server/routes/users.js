@@ -26,7 +26,6 @@ router.post('/login', async (ctx) => {
     const res = await User.findOne(
       {
         userName,
-        // userPwd,
         userPwd: md5(userPwd),
         // 过滤需要返回给接口的字段，不用将数据库全量字段返回
       },

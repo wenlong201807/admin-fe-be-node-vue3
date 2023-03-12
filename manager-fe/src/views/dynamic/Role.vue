@@ -110,7 +110,7 @@
   </div>
 </template>
 <script>
-import utils from '../utils/utils';
+import utils from '@/utils/utils';
 export default {
   name: 'role',
   data() {
