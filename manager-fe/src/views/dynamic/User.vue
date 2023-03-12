@@ -92,7 +92,7 @@
             :disabled="action == 'edit'"
             placeholder="请输入用户邮箱"
           >
-            <template #append>@qq.com</template>
+            <!-- <template #append>@qq.com</template> -->
           </el-input>
         </el-form-item>
         <el-form-item label="手机号" prop="mobile">
@@ -265,7 +265,6 @@ export default {
     const getUserList = async () => {
       let params = { ...user, ...pager };
       try {
-        console.log('ctx.$api:22', ctx.$api);
         const { list, page } = await proxy.$api.getUserList(params);
         userList.value = list;
         pager.total = page.total;
@@ -343,7 +342,7 @@ export default {
       ctx.$refs.dialogForm.validate(async (valid) => {
         if (valid) {
           let params = toRaw(userForm);
-          params.userEmail += '@qq.com';
+          params.userEmail;
           params.action = action.value;
           let res = await proxy.$api.userSubmit(params);
           showModal.value = false;

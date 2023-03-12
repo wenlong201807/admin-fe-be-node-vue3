@@ -128,14 +128,16 @@ router.post('/operate', async (ctx) => {
         `系统监测到有重复的用户，信息如下：${res.userName} - ${res.userEmail}`
       );
     } else {
+      // 新增用户时，查看提示信息
       const doc = await Counter.findOneAndUpdate(
         { _id: 'userId' },
-        { $inc: { sequence_value: 1 } },
+        // { $inc: { sequence_value: 1 } },
         { new: true }
       );
       try {
         const user = new User({
-          userId: doc.sequence_value,
+          // userId: doc._id,
+          // userId: doc.sequence_value, // TODO
           userName,
           userPwd: md5('123456'),
           userEmail,
