@@ -10,6 +10,7 @@ const router = require('koa-router')()
 const jwt = require('jsonwebtoken')
 const koajwt = require('koa-jwt')
 const util = require('./utils/util')
+const constance = require('./utils/constance');
 const users = require('./routes/users')
 const menus = require('./routes/menus')
 const roles = require('./routes/roles')
@@ -51,8 +52,8 @@ app.use(async (ctx, next) => {
   })
 })
 
-// 校验中间件
-app.use(koajwt({ secret: 'imooc' }).unless({
+// 校验中间件 权限拦截
+app.use(koajwt({ secret: constance.SECRET_SALT }).unless({
   path: [/^\/api\/users\/login/]// 过滤不用校验的接口
 }))
 

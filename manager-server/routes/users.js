@@ -7,6 +7,7 @@ const Counter = require('./../models/counterSchema');
 const Menu = require('./../models/menuSchema');
 const Role = require('./../models/roleSchema');
 const util = require('./../utils/util');
+const constance = require('./../utils/constance');
 const jwt = require('jsonwebtoken');
 const md5 = require('md5');
 router.prefix('/users');
@@ -21,11 +22,12 @@ router.post('/login', async (ctx) => {
      * 2. {userId:1,_id:0} // 1代表返回，0代表不返回
      * 3. .select('userId')
      */
+    // console.log('md5(userPwd):', md5('123456'))
     const res = await User.findOne(
       {
         userName,
-        userPwd,
-        // userPwd: md5(userPwd),
+        // userPwd,
+        userPwd: md5(userPwd),
         // 过滤需要返回给接口的字段，不用将数据库全量字段返回
       },
       'userId userName userEmail state role deptId roleList'
@@ -38,7 +40,7 @@ router.post('/login', async (ctx) => {
         {
           data,
         },
-        'imooc',
+        constance.SECRET_SALT,
         { expiresIn: '1h' }
       ); // 密钥，过期时间
       data.token = token;
@@ -61,7 +63,7 @@ router.get('/list', async (ctx) => {
   if (state && state != '0') params.state = state;
   try {
     // 根据条件查询所有用户列表
-    const query = User.find(params, { _id: 0, userPwd: 0 });
+    const query = User.find(params, { _id: 0, userPwd: 0 }); // 排除掉的字段 { _id: 0, userPwd: 0 }
     const list = await query.skip(skipIndex).limit(page.pageSize);
     const total = await User.countDocuments(params);
 
@@ -88,11 +90,12 @@ router.get('/all/list', async (ctx) => {
 });
 
 // 用户删除/批量删除
+// 软删除操作，删除的数据做一个标记而已，数据不是真的删除
 router.post('/delete', async (ctx) => {
   // 待删除的用户Id数组
   const { userIds } = ctx.request.body;
   // User.updateMany({ $or: [{ userId: 10001 }, { userId: 10002 }] })
-  const res = await User.updateMany({ userId: { $in: userIds } }, { state: 2 });
+  const res = await User.updateMany({ userId: { $in: userIds } }, { state: 2 }); // 被删除的数据标记为状态2 state: 2
   if (res.nModified) {
     ctx.body = util.success(res, `共删除成功${res.nModified}条`);
     return;
@@ -166,10 +169,13 @@ router.post('/operate', async (ctx) => {
     }
   }
 });
+
+// Home.vue 左侧权限菜单
 // 获取用户对应的权限菜单
 router.get('/getPermissionList', async (ctx) => {
   let authorization = ctx.request.headers.authorization;
   let { data } = util.decoded(authorization);
+
   let menuList = await getMenuList(data.role, data.roleList);
   let actionList = getAction(JSON.parse(JSON.stringify(menuList)));
   ctx.body = util.success({ menuList, actionList });
@@ -178,6 +184,7 @@ router.get('/getPermissionList', async (ctx) => {
 async function getMenuList(userRole, roleKeys) {
   let rootList = [];
   if (userRole == 0) {
+    // 管理员时，查询所有
     rootList = (await Menu.find({})) || [];
   } else {
     // 根据用户拥有的角色，获取权限列表
@@ -191,12 +198,15 @@ async function getMenuList(userRole, roleKeys) {
         ...halfCheckedKeys,
       ]);
     });
+    // 权限去重
     permissionList = [...new Set(permissionList)];
     rootList = await Menu.find({ _id: { $in: permissionList } });
   }
+  // 非管理员，只能看到 授权菜单和授权按钮权限
   return util.getTreeMenu(rootList, null, []);
 }
 
+// 按钮权限获取
 function getAction(list) {
   let actionList = [];
   const deep = (arr) => {
@@ -213,8 +223,10 @@ function getAction(list) {
     }
   };
   deep(list);
+
   return actionList;
 }
+
 module.exports = router;
 
 /*

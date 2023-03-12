@@ -237,6 +237,7 @@ export default {
       this.action = "add";
       if (type == 2) {
         this.menuForm.parentId = [...row.parentId, row._id].filter(
+          // 顶级的父菜单是null，依据前端组件特点，需要过滤掉
           (item) => item
         );
       }
@@ -244,7 +245,9 @@ export default {
     handleEdit(row) {
       this.showModal = true;
       this.action = "edit";
+      // 确保数据可以重置成功，下一次更新ui前执行完成。
       this.$nextTick(() => {
+        // 需要拷贝一份变量
         Object.assign(this.menuForm, row);
       });
     },

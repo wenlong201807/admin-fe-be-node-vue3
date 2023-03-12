@@ -15,8 +15,8 @@ const userSchema = mongoose.Schema({
   role: {
     type: Number,
     default: 1,
-  }, // 用户角色 0：系统管理员  1： 普通用户
-  roleList: [], //系统角色
+  }, // 用户角色 0：系统管理员  1： 普通用户  管理员才可以控制菜单
+  roleList: [], //系统角色 对应角色表中的_id
   createTime: {
     type: Date,
     default: Date.now(),

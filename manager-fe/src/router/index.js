@@ -22,24 +22,54 @@ const routes = [
         },
         component: () => import('@/views/Welcome.vue'),
       },
-      //   {
-      //     name: 'user',
-      //     path: 'user',
-      //     meta: {
-      //       title: '用户管理',
-      //     },
-      //     component: () => import('@/views/User.vue'),
-      //     children: [
-      //       {
-      //         name: 'info',
-      //         path: 'info',
-      //         meta: {
-      //           title: '统计信息',
-      //         },
-      //         component: () => import('@/views/Role.vue'),
-      //       },
-      //     ],
-      //   },
+      {
+        name: 'system/user',
+        path: 'system/user',
+        meta: {
+          title: '用户管理',
+        },
+        component: () => import('@/views/User.vue'),
+      },
+      {
+        name: 'system/menu',
+        path: 'system/menu',
+        meta: {
+          title: '菜单管理',
+        },
+        component: () => import('@/views/Menu.vue'),
+      },
+      {
+        name: 'system/role',
+        path: 'system/role',
+        meta: {
+          title: '角色管理',
+        },
+        component: () => import('@/views/Role.vue'),
+      },
+      {
+        name: 'system/dept',
+        path: 'system/dept',
+        meta: {
+          title: '部门管理',
+        },
+        component: () => import('@/views/Dept.vue'),
+      },
+      {
+        name: 'audit/leave',
+        path: '/audit/leave',
+        meta: {
+          title: '休假审批',
+        },
+        component: () => import('@/views/Leave.vue'),
+      },
+      {
+        name: 'audit/approve',
+        path: '/audit/approve',
+        meta: {
+          title: '待我审批',
+        },
+        component: () => import('@/views/Approve.vue'),
+      },
     ],
   },
   {
@@ -70,9 +100,14 @@ async function loadAsyncRoutes() {
     try {
       const { menuList } = await API.getPermissionList();
       let routes = utils.generateRoute(menuList);
+      // TODO 动态菜单有问题
+      const modules = import.meta.glob('@/views/*.vue');
+      console.log('动态菜单:', routes);
+
       routes.map((route) => {
-        let url = `./../views/${route.component}.vue`;
-        route.component = () => import(url);
+        let url = `@/views/${route.component}.vue`;
+        route.component = modules[url];
+        // route.component = () => /* @vite-ignore */ import(url);
         router.addRoute('home', route);
       });
 

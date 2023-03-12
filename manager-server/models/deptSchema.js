@@ -4,7 +4,7 @@ const deptSchema = mongoose.Schema({
   userId: String,
   userName: String,
   userEmail: String,
-  parentId: [mongoose.Types.ObjectId],
+  parentId: [mongoose.Types.ObjectId], // 上级部门的id
   updateTime: {
     type: Date,
     default: Date.now(),

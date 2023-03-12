@@ -49,6 +49,7 @@ function request(options) {
   if (options.method.toLowerCase() === 'get') {
     options.params = options.data;
   }
+  // mock 有两个配置，【垫底】一个全局统一配置，【优先级最高】一个是独立接口配置
   let isMock = config.mock;
   if (typeof options.mock != 'undefined') {
     isMock = options.mock;

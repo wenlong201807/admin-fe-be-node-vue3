@@ -5,7 +5,7 @@ const userSchema = mongoose.Schema({
   menuCode: String, //权限标识
   path: String, //路由地址
   icon: String, //图标
-  component: String, //组件地址
+  component: String, //组件地址 let url = `./../views/${route.component}.vue`;
   menuState: Number, //菜单状态
   parentId: [mongoose.Types.ObjectId],
   createTime: {

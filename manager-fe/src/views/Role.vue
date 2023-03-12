@@ -110,27 +110,28 @@
   </div>
 </template>
 <script>
-import utils from "../utils/utils";
+import utils from '../utils/utils';
 export default {
-  name: "role",
+  name: 'role',
   data() {
     return {
       queryForm: {
-        roleName: "",
+        roleName: '',
       },
       columns: [
         {
-          label: "角色名称",
-          prop: "roleName",
+          label: '角色名称',
+          prop: 'roleName',
         },
         {
-          label: "备注",
-          prop: "remark",
+          label: '备注',
+          prop: 'remark',
         },
         {
-          label: "权限列表",
-          prop: "permissionList",
+          label: '权限列表',
+          prop: 'permissionList',
           width: 200,
+          // 注意函数作用域问题 this的指向
           formatter: (row, column, value) => {
             let names = [];
             let list = value.halfCheckedKeys || [];
@@ -138,19 +139,19 @@ export default {
               let name = this.actionMap[key];
               if (key && name) names.push(name);
             });
-            return names.join(",");
+            return names.join(',');
           },
         },
         {
-          label: "更新时间",
-          prop: "updateTime",
+          label: '更新时间',
+          prop: 'updateTime',
           formatter(row, column, value) {
             return utils.formateDate(new Date(value));
           },
         },
         {
-          label: "创建时间",
-          prop: "createTime",
+          label: '创建时间',
+          prop: 'createTime',
           formatter(row, column, value) {
             return utils.formateDate(new Date(value));
           },
@@ -163,20 +164,20 @@ export default {
         pageSize: 10,
       },
       showModal: false,
-      action: "create",
+      action: 'create',
       roleForm: {},
       rules: {
         roleName: [
           {
             required: true,
-            message: "请输入角色角色名称",
+            message: '请输入角色角色名称',
           },
         ],
       },
       // 权限展示
       showPermission: false,
-      curRoleId: "",
-      curRoleName: "",
+      curRoleId: '',
+      curRoleName: '',
       menuList: [],
       // 菜单映射表
       actionMap: {},
@@ -216,12 +217,12 @@ export default {
     },
     // 角色添加
     handleAdd() {
-      this.action = "create";
+      this.action = 'create';
       this.showModal = true;
     },
     // 角色编辑
     handleEdit(row) {
-      this.action = "edit";
+      this.action = 'edit';
       this.showModal = true;
       this.$nextTick(() => {
         this.roleForm = {
@@ -233,13 +234,13 @@ export default {
     },
     // 角色删除
     async handleDel(_id) {
-      await this.$api.roleOperate({ _id, action: "delete" });
-      this.$message.success("删除成功");
+      await this.$api.roleOperate({ _id, action: 'delete' });
+      this.$message.success('删除成功');
       this.getRoleList();
     },
     // 弹框关闭
     handleClose() {
-      this.handleReset("dialogForm");
+      this.handleReset('dialogForm');
       this.showModal = false;
     },
     // 角色提交
@@ -251,8 +252,8 @@ export default {
           let res = await this.$api.roleOperate(params);
           if (res) {
             this.showModal = false;
-            this.$message.success("创建成功");
-            this.handleReset("dialogForm");
+            this.$message.success('创建成功');
+            this.handleReset('dialogForm');
             this.getRoleList();
           }
         }
@@ -292,9 +293,10 @@ export default {
       };
       await this.$api.updatePermission(params);
       this.showPermission = false;
-      this.$message.success("设置成功");
+      this.$message.success('设置成功');
       this.getRoleList();
     },
+    // 潜逃列表递归成对象 深度优先遍历
     getActionMap(list) {
       let actionMap = {};
       const deep = (arr) => {
@@ -315,5 +317,4 @@ export default {
 };
 </script>
 
-<style lang="scss">
-</style>
+<style lang="scss"></style>

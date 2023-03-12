@@ -8,6 +8,7 @@ export default {
       url: '/users/login',
       method: 'post',
       data: params,
+      mock: false,
     });
   },
   noticeCount(params) {
@@ -39,6 +40,7 @@ export default {
       url: '/users/list',
       method: 'get',
       data: params,
+      mock: false,
     });
   },
   getAllUserList() {
@@ -54,6 +56,7 @@ export default {
       url: '/users/delete',
       method: 'post',
       data: params,
+      mock: false,
     });
   },
   getRoleAllList() {

@@ -3,8 +3,8 @@ const userSchema = mongoose.Schema({
   roleName: String,
   remark: String,
   permissionList: {
-    checkedKeys: [],
-    halfCheckedKeys: [],
+    checkedKeys: [], //
+    halfCheckedKeys: [], //
   },
   updateTime: {
     type: Date,
