@@ -2,7 +2,7 @@
   <div class="dept-manage">
     <div class="query-form">
       <el-form :inline="true" ref="queryForm" :model="queryForm">
-        <el-form-item label="部门名称">
+        <el-form-item label="部门名称" prop="deptName">
           <el-input
             placeholder="请输入部门名称"
             v-model="queryForm.deptName"
@@ -190,6 +190,7 @@ export default {
     },
     handleReset(form) {
       this.$refs[form].resetFields();
+      this.getDeptList();
     },
     handleOpen() {
       this.action = 'create';

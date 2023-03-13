@@ -72,7 +72,7 @@
         @current-change="handleCurrentChange"
       />
     </div>
-    <el-dialog :title="`${action === 'create' ? '新增' : '编辑'}用户`" v-model="showModal">
+    <el-dialog :title="`${action === 'add' ? '新增' : '编辑'}用户`" v-model="showModal">
       <el-form
         ref="dialogForm"
         :model="userForm"

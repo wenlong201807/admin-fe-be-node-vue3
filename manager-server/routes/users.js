@@ -138,7 +138,7 @@ router.post('/operate', async (ctx) => {
       const total = await User.countDocuments({});
       try {
         const user = new User({
-          userId: total + 1,
+          userId: (total + 1) + '',
           // userId: doc._id,
           // userId: doc.sequence_value, // TODO
           userName,

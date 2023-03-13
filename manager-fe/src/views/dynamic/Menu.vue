@@ -239,6 +239,7 @@ export default {
     // 表单重置
     handleReset(form) {
       this.$refs[form].resetFields();
+      this.getMenuList();
     },
     // 新增菜单
     handleAdd(type, row) {

@@ -242,6 +242,7 @@ export default {
     // 重置查询表单
     const handleReset = (form) => {
       ctx.$refs[form].resetFields();
+      getApplyList();
     };
 
     // 分页事件处理

@@ -228,6 +228,7 @@ export default {
     // 表单重置
     handleReset(form) {
       this.$refs[form].resetFields();
+      this.getRoleList();
     },
     // 角色添加
     handleAdd() {
