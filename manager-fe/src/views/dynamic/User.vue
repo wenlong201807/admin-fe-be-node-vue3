@@ -45,7 +45,7 @@
           :formatter="item.formatter"
         >
         </el-table-column>
-        <el-table-column label="操作" width="150">
+        <el-table-column fixed="right" label="操作" width="150">
           <template #default="scope">
             <el-button
               @click="handleEdit(scope.row)"
@@ -72,7 +72,7 @@
         @current-change="handleCurrentChange"
       />
     </div>
-    <el-dialog title="用户新增" v-model="showModal">
+    <el-dialog :title="`${action === 'create' ? '新增' : '编辑'}用户`" v-model="showModal">
       <el-form
         ref="dialogForm"
         :model="userForm"
@@ -153,7 +153,7 @@ export default {
     const { ctx, proxy } = getCurrentInstance();
     // 初始化用户表单对象
     const user = reactive({
-      state: 1,
+      state: 0,
     });
     // 初始化用户列表数据
     const userList = ref([]);
@@ -212,6 +212,10 @@ export default {
       {
         label: '用户名',
         prop: 'userName',
+      },
+      {
+        label: '手机号',
+        prop: 'mobile',
       },
       {
         label: '用户邮箱',
@@ -277,6 +281,8 @@ export default {
     // 重置查询表单
     const handleReset = (form) => {
       ctx.$refs[form].resetFields();
+      user.state = 0; // 查询状态改为 查询所有
+      getUserList();
     };
     // 分页事件处理
     const handleCurrentChange = (current) => {
@@ -288,23 +294,23 @@ export default {
       await proxy.$api.userDel({
         userIds: [row.userId], //可单个删除，也可批量删除
       });
-      ctx.$message.success('删除成功');
+      proxy.$message.success('删除成功');
       getUserList();
     };
     // 批量删除
     const handlePatchDel = async () => {
       if (checkedUserIds.value.length == 0) {
-        ctx.$message.error('请选择要删除的用户');
+        proxy.$message.error('请选择要删除的用户');
         return;
       }
       const res = await proxy.$api.userDel({
         userIds: checkedUserIds.value, //可单个删除，也可批量删除
       });
       if (res.nModified > 0) {
-        ctx.$message.success('删除成功');
+        proxy.$message.success('删除成功');
         getUserList();
       } else {
-        ctx.$message.success('修改失败');
+        proxy.$message.success('修改失败');
       }
     };
 
@@ -344,9 +350,11 @@ export default {
           let params = toRaw(userForm);
           params.userEmail;
           params.action = action.value;
-          let res = await proxy.$api.userSubmit(params);
+          await proxy.$api.userSubmit(params);
           showModal.value = false;
-          ctx.$message.success('用户创建成功');
+          proxy.$message.success(
+            `用户${params.action === 'edit' ? '修改' : '创建'}成功`
+          );
           handleReset('dialogForm');
           getUserList();
         }

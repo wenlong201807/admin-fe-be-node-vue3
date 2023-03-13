@@ -16,7 +16,9 @@
     </div>
     <div class="base-table">
       <div class="action">
-        <el-button type="primary" @click="handleOpen">创建</el-button>
+        <el-button type="primary" @click="handleOpen" v-has="'dept-create'"
+          >新增</el-button
+        >
       </div>
       <el-table
         :data="deptList"
@@ -29,23 +31,29 @@
           :key="item.prop"
           v-bind="item"
         ></el-table-column>
-        <el-table-column label="操作">
+        <el-table-column fixed="right" label="操作">
           <template #default="scope">
-            <el-button size="mini" type="primary" @click="handleEdit(scope.row)"
+            <el-button
+              size="mini"
+              type="primary"
+              @click="handleEdit(scope.row)"
+              v-has="'dept-edit'"
               >编辑</el-button
             >
             <el-button
               size="mini"
               type="danger"
               @click="handleDel(scope.row._id)"
+              v-has="'dept-delete'"
               >删除</el-button
             >
           </template>
         </el-table-column>
       </el-table>
+      <div :style="{ height: '30px' }"></div>
     </div>
     <el-dialog
-      :title="action == 'create' ? '创建部门' : '编辑部门'"
+      :title="action == 'create' ? '新增部门' : '编辑部门'"
       v-model="showModal"
     >
       <el-form
@@ -81,7 +89,7 @@
               :key="item.userId"
               :label="item.userName"
               :value="`${item.userId}/${item.userName}/${item.userEmail}`"
-              ></el-option>
+            ></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="负责人邮箱" prop="userEmail">
@@ -103,28 +111,28 @@
 </template>
 <script>
 export default {
-  name: "dept",
+  name: 'dept',
   data() {
     return {
       queryForm: {
-        deptName: "",
+        deptName: '',
       },
       columns: [
         {
-          label: "部门名称",
-          prop: "deptName",
+          label: '部门名称',
+          prop: 'deptName',
         },
         {
-          label: "负责人",
-          prop: "userName",
+          label: '负责人',
+          prop: 'userName',
         },
         {
-          label: "更新时间",
-          prop: "updateTime",
+          label: '更新时间',
+          prop: 'updateTime',
         },
         {
-          label: "创建时间",
-          prop: "createTime",
+          label: '创建时间',
+          prop: 'createTime',
         },
       ],
       deptList: [],
@@ -132,7 +140,7 @@ export default {
         pageNum: 1,
         pageSize: 10,
       },
-      action: "create",
+      action: 'create',
       showModal: false,
       deptForm: {
         parentId: [null],
@@ -142,22 +150,22 @@ export default {
         parentId: [
           {
             required: true,
-            message: "请选择上级部门",
-            trigger: "blur",
+            message: '请选择上级部门',
+            trigger: 'blur',
           },
         ],
         deptName: [
           {
             required: true,
-            message: "请输入部门名称",
-            trigger: "blur",
+            message: '请输入部门名称',
+            trigger: 'blur',
           },
         ],
         user: [
           {
             required: true,
-            message: "请选择负责人",
-            trigger: "blur",
+            message: '请选择负责人',
+            trigger: 'blur',
           },
         ],
       },
@@ -176,19 +184,19 @@ export default {
       this.userList = await this.$api.getAllUserList();
     },
     handleUser(val) {
-      console.log("=>", val);
-      const [userId, userName, userEmail] = val.split("/");
+      console.log('=>', val);
+      const [userId, userName, userEmail] = val.split('/');
       Object.assign(this.deptForm, { userId, userName, userEmail });
     },
     handleReset(form) {
       this.$refs[form].resetFields();
     },
     handleOpen() {
-      this.action = "create";
+      this.action = 'create';
       this.showModal = true;
     },
     handleEdit(row) {
-      this.action = "edit";
+      this.action = 'edit';
       this.showModal = true;
       this.$nextTick(() => {
         Object.assign(this.deptForm, row, {
@@ -198,14 +206,14 @@ export default {
       });
     },
     async handleDel(_id) {
-      this.action = "delete";
+      this.action = 'delete';
       await this.$api.deptOperate({ _id, action: this.action });
-      this.$message.success("删除成功");
+      this.$message.success('删除成功');
       this.getDeptList();
     },
     handleClose() {
       this.showModal = false;
-      this.handleReset("dialogForm");
+      this.handleReset('dialogForm');
     },
     handleSubmit() {
       this.$refs.dialogForm.validate(async (valid) => {
@@ -213,7 +221,7 @@ export default {
           let params = { ...this.deptForm, action: this.action };
           delete params.user;
           await this.$api.deptOperate(params);
-          this.$message.success("操作成功");
+          this.$message.success('操作成功');
           this.handleClose();
           this.getDeptList();
         }

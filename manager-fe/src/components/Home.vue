@@ -4,7 +4,7 @@
       <!-- 系统LOGO -->
       <div class="logo">
         <img src="./../assets/logo.png" />
-        <span>Manager</span>
+        <span>通用后台系统</span>
       </div>
       <!-- 导航菜单 -->
       <el-menu
@@ -19,11 +19,11 @@
       </el-menu>
     </div>
     <div :class="['content-right', isCollapse ? 'fold' : 'unfold']">
-      <div class="nav-top">
+      <div :class="['nav-top', isCollapse ? 'fold' : 'unfold']">
         <div class="nav-left">
-          <div class="menu-fold" @click="toggle">
+          <!-- <div class="menu-fold" @click="toggle">
             <i class="el-icon-s-fold"></i>
-          </div>
+          </div> -->
           <div class="bread">
             <BreadCrumb />
           </div>
@@ -33,7 +33,12 @@
             :is-dot="noticeCount > 0 ? true : false"
             class="notice"
             type="danger"
-            @click="$router.push('/audit/approve')"
+            @click="
+              () => {
+                $router.push('/audit/approve');
+                activeMenu = '/audit/approve';
+              }
+            "
           >
             <i class="el-icon-bell"></i>
           </el-badge>
@@ -139,7 +144,7 @@ export default {
       }
     }
     .nav-menu {
-      height: calc(100vh - 50px);
+      height: calc(100% - 50px);
       border-right: none;
     }
     // 合并
@@ -153,6 +158,7 @@ export default {
   }
   .content-right {
     margin-left: 200px;
+    padding-top: 50px; // 顶部固定定位
     // 合并
     &.fold {
       margin-left: 64px;
@@ -162,12 +168,26 @@ export default {
       margin-left: 200px;
     }
     .nav-top {
+      position: fixed;
+      top: 0;
+      z-index: 10;
+      // width: 100%;
       height: 50px;
       line-height: 50px;
       display: flex;
       justify-content: space-between;
-      border-bottom: 1px solid #ddd;
       padding: 0 20px;
+      background: #fff;
+      // transition: all ease 1s;
+      // // 合并
+      // &.fold {
+      //   width: calc(100% - 64px);
+      // }
+      // // 展开
+      &.unfold {
+        width: calc(100% - 200px);
+      }
+
       .nav-left {
         display: flex;
         align-items: center;
@@ -189,9 +209,11 @@ export default {
       }
     }
     .wrapper {
+      box-sizing: border-box;
       background: #eef0f3;
       padding: 20px;
-      height: calc(100vh - 50px);
+      min-height: calc(100vh - 50px);
+      height: calc(100% - 50px);
       .main-page {
         background: #fff;
         height: 100%;

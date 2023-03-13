@@ -47,7 +47,7 @@ router.post('/operate', async (ctx) => {
     } else if (action == 'edit') {
       params.updateTime = new Date();
       await Dept.findByIdAndUpdate(_id, params);
-      info = '编辑成功';
+      info = '修改成功';
     } else if (action == 'delete') {
       await Dept.findByIdAndRemove(_id);
       // 如果删除的节点有子节点，则所有子节点都需要删除

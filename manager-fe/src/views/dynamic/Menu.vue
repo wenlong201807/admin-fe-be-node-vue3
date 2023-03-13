@@ -19,7 +19,9 @@
     </div>
     <div class="base-table">
       <div class="action">
-        <el-button type="primary" @click="handleAdd(1)">新增</el-button>
+        <el-button type="primary" @click="handleAdd(1)" v-has="'menu-create'"
+          >新增</el-button
+        >
       </div>
       <el-table
         :data="menuList"
@@ -35,28 +37,35 @@
           :formatter="item.formatter"
         >
         </el-table-column>
-        <el-table-column label="操作" width="220">
+        <el-table-column fixed="right" label="操作" width="220">
           <template #default="scope">
             <el-button
               @click="handleAdd(2, scope.row)"
               type="primary"
               size="mini"
+              v-has="'menu-create-row'"
               >新增</el-button
             >
-            <el-button @click="handleEdit(scope.row)" size="mini"
+            <el-button
+              @click="handleEdit(scope.row)"
+              size="mini"
+              v-has="'menu-edit'"
               >编辑</el-button
             >
             <el-button
               type="danger"
               size="mini"
               @click="handleDel(scope.row._id)"
+              v-has="'menu-delete'"
               >删除</el-button
             >
           </template>
         </el-table-column>
       </el-table>
+
+      <div :style="{ height: '30px' }"></div>
     </div>
-    <el-dialog title="用户新增" v-model="showModal">
+    <el-dialog :title="`${action === 'create' ? '新增' : '编辑'}菜单`" v-model="showModal">
       <el-form
         ref="dialogForm"
         :model="menuForm"
@@ -130,9 +139,9 @@
   </div>
 </template>
 <script>
-import utils from "@/utils/utils";
+import utils from '@/utils/utils';
 export default {
-  name: "menu",
+  name: 'menu',
   data() {
     return {
       queryForm: {
@@ -141,50 +150,50 @@ export default {
       menuList: [],
       columns: [
         {
-          label: "菜单名称",
-          prop: "menuName",
+          label: '菜单名称',
+          prop: 'menuName',
           width: 150,
         },
         {
-          label: "图标",
-          prop: "icon",
+          label: '图标',
+          prop: 'icon',
         },
         {
-          label: "菜单类型",
-          prop: "menuType",
+          label: '菜单类型',
+          prop: 'menuType',
           formatter(row, column, value) {
             return {
-              1: "菜单",
-              2: "按钮",
+              1: '菜单',
+              2: '按钮',
             }[value];
           },
         },
         {
-          label: "权限标识",
-          prop: "menuCode",
+          label: '权限标识',
+          prop: 'menuCode',
         },
         {
-          label: "路由地址",
-          prop: "path",
+          label: '路由地址',
+          prop: 'path',
         },
         {
-          label: "组件路径",
-          prop: "component",
+          label: '组件路径',
+          prop: 'component',
         },
         {
-          label: "菜单状态",
-          prop: "menuState",
+          label: '菜单状态',
+          prop: 'menuState',
           width: 90,
           formatter(row, column, value) {
             return {
-              1: "正常",
-              2: "停用",
+              1: '正常',
+              2: '停用',
             }[value];
           },
         },
         {
-          label: "创建时间",
-          prop: "createTime",
+          label: '创建时间',
+          prop: 'createTime',
           formatter(row, column, value) {
             return utils.formateDate(new Date(value));
           },
@@ -196,19 +205,19 @@ export default {
         menuType: 1,
         menuState: 1,
       },
-      action: "",
+      action: '',
       rules: {
         menuName: [
           {
             required: true,
-            message: "请输入菜单名称",
-            trigger: "blur",
+            message: '请输入菜单名称',
+            trigger: 'blur',
           },
           {
             min: 2,
             max: 10,
-            message: "长度在2-8个字符",
-            trigger: "blur",
+            message: '长度在2-8个字符',
+            trigger: 'blur',
           },
         ],
       },
@@ -234,7 +243,7 @@ export default {
     // 新增菜单
     handleAdd(type, row) {
       this.showModal = true;
-      this.action = "add";
+      this.action = 'add';
       if (type == 2) {
         this.menuForm.parentId = [...row.parentId, row._id].filter(
           // 顶级的父菜单是null，依据前端组件特点，需要过滤掉
@@ -244,7 +253,7 @@ export default {
     },
     handleEdit(row) {
       this.showModal = true;
-      this.action = "edit";
+      this.action = 'edit';
       // 确保数据可以重置成功，下一次更新ui前执行完成。
       this.$nextTick(() => {
         // 需要拷贝一份变量
@@ -252,8 +261,8 @@ export default {
       });
     },
     async handleDel(_id) {
-      await this.$api.menuSubmit({ _id, action: "delete" });
-      this.$message.success("删除成功");
+      await this.$api.menuSubmit({ _id, action: 'delete' });
+      this.$message.success('删除成功');
       this.getMenuList();
     },
     // 菜单操作-提交
@@ -264,8 +273,8 @@ export default {
           let params = { ...menuForm, action };
           let res = await this.$api.menuSubmit(params);
           this.showModal = false;
-          this.$message.success("操作成功");
-          this.handleReset("dialogForm");
+          this.$message.success('操作成功');
+          this.handleReset('dialogForm');
           this.getMenuList();
         }
       });
@@ -273,11 +282,10 @@ export default {
     // 弹框关闭
     handleClose() {
       this.showModal = false;
-      this.handleReset("dialogForm");
+      this.handleReset('dialogForm');
     },
   },
 };
 </script>
 
-<style lang="scss">
-</style>
+<style lang="scss"></style>

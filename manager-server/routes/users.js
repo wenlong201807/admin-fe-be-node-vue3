@@ -129,13 +129,16 @@ router.post('/operate', async (ctx) => {
       );
     } else {
       // 新增用户时，查看提示信息
+      // TODO 用户查重
       const doc = await Counter.findOneAndUpdate(
         { _id: 'userId' },
         // { $inc: { sequence_value: 1 } },
         { new: true }
       );
+      const total = await User.countDocuments({});
       try {
         const user = new User({
+          userId: total + 1,
           // userId: doc._id,
           // userId: doc.sequence_value, // TODO
           userName,

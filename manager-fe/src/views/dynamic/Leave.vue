@@ -32,7 +32,7 @@
           :formatter="item.formatter"
         >
         </el-table-column>
-        <el-table-column label="操作" width="150">
+        <el-table-column fixed="right" label="操作" width="150">
           <template #default="scope">
             <el-button size="mini" @click="handleDetail(scope.row)"
               >查看</el-button
@@ -152,19 +152,14 @@
   </div>
 </template>
 <script>
-import { getCurrentInstance, onMounted, reactive, ref, toRaw } from "vue";
-import utils from "@/utils/utils";
+import { getCurrentInstance, onMounted, reactive, ref, toRaw } from 'vue';
+import utils from '@/utils/utils';
 export default {
-  name: "user",
+  name: 'user',
   setup(aa, bb) {
     //   获取Composition API 上下文对象
     const { ctx, proxy } = getCurrentInstance();
-    const ins = getCurrentInstance();
-    console.log('ins:', ins)
-    console.log('proxy:', proxy)
-    console.log('proxy.$api:', proxy.$api)
-    // console.log('aa, bb:', aa, bb, getCurrentInstance())
-    // console.log('ctx:', ctx)
+
     const queryForm = reactive({
       applyState: 1,
     });
@@ -176,66 +171,66 @@ export default {
     // 定义动态表格-格式
     const columns = reactive([
       {
-        label: "单号",
-        prop: "orderNo",
+        label: '单号',
+        prop: 'orderNo',
       },
       {
-        label: "休假时间",
-        prop: "",
+        label: '休假时间',
+        prop: '',
         formatter(row) {
           return (
-            utils.formateDate(new Date(row.startTime), "yyyy-MM-dd") +
-            "到" +
-            utils.formateDate(new Date(row.endTime), "yyyy-MM-dd")
+            utils.formateDate(new Date(row.startTime), 'yyyy-MM-dd') +
+            '到' +
+            utils.formateDate(new Date(row.endTime), 'yyyy-MM-dd')
           );
         },
       },
       {
-        label: "休假时长",
-        prop: "leaveTime",
+        label: '休假时长',
+        prop: 'leaveTime',
       },
       {
-        label: "休假类型",
-        prop: "applyType",
+        label: '休假类型',
+        prop: 'applyType',
         formatter(row, column, value) {
           return {
-            1: "事假",
-            2: "调休",
-            3: "年假",
+            1: '事假',
+            2: '调休',
+            3: '年假',
           }[value];
         },
       },
       {
-        label: "休假原因",
-        prop: "reasons",
+        label: '休假原因',
+        prop: 'reasons',
       },
       {
-        label: "申请时间",
-        prop: "createTime",
+        label: '申请时间',
+        prop: 'createTime',
         width: 180,
         formatter: (row, column, value) => {
           return utils.formateDate(new Date(value));
         },
       },
       {
-        label: "审批人",
-        prop: "auditUsers",
+        label: '审批人',
+        prop: 'auditUsers',
       },
       {
-        label: "当前审批人",
-        prop: "curAuditUserName",
+        label: '当前审批人',
+        prop: 'curAuditUserName',
       },
       {
-        label: "审批状态",
-        prop: "applyState",
+        label: '审批状态',
+        prop: 'applyState',
         formatter: (row, column, value) => {
           // 1:待审批 2:审批中 3:审批拒绝 4:审批通过 5:作废
           return {
-            1: "待审批",
-            2: "审批中",
-            3: "审批拒绝",
-            4: "审批通过",
-            5: "作废",
+            1: '待审批',
+            2: '审批中',
+            3: '审批拒绝',
+            4: '审批通过',
+            5: '作废',
           }[value];
         },
       },
@@ -245,13 +240,13 @@ export default {
     // 创建休假弹框表单
     const leaveForm = reactive({
       applyType: 1,
-      startTime: "",
-      endTime: "",
-      leaveTime: "0天",
-      reasons: "",
+      startTime: '',
+      endTime: '',
+      leaveTime: '0天',
+      reasons: '',
     });
     //create:创建 delete:作废
-    const action = ref("create");
+    const action = ref('create');
     const showModal = ref(false);
     const showDetailModal = ref(false);
     let detail = ref({});
@@ -259,25 +254,25 @@ export default {
     const rules = {
       startTime: [
         {
-          type: "date",
+          type: 'date',
           required: true,
-          message: "请输入开始日期",
-          trigger: "change",
+          message: '请输入开始日期',
+          trigger: 'change',
         },
       ],
       endTime: [
         {
-          type: "date",
+          type: 'date',
           required: true,
-          message: "请输入结束日期",
-          trigger: "change",
+          message: '请输入结束日期',
+          trigger: 'change',
         },
       ],
       reasons: [
         {
           required: true,
-          message: "请输入休假原因",
-          trigger: ["change", "blur"],
+          message: '请输入休假原因',
+          trigger: ['change', 'blur'],
         },
       ],
     };
@@ -289,7 +284,7 @@ export default {
     // 加载申请列表
     const getApplyList = async () => {
       let params = { ...queryForm, ...pager };
-      console.log('加载申请列表proxy.$api--:', proxy.$api) // TODO
+      console.log('加载申请列表proxy.$api--:', proxy.$api); // TODO
       let { list, page } = await proxy.$api.getApplyList(params);
       applyList.value = list;
       pager.total = page.total;
@@ -308,26 +303,26 @@ export default {
     // 点击申请休假-展示弹框
     const handleApply = () => {
       showModal.value = true;
-      action.value = "create";
+      action.value = 'create';
     };
     // 弹框关闭
     const handleClose = () => {
       showModal.value = false;
-      handleReset("dialogForm");
+      handleReset('dialogForm');
     };
     // 获取休假时长
     const handleDateChange = (key, val) => {
       let { startTime, endTime } = leaveForm;
       if (!startTime || !endTime) return;
       if (startTime > endTime) {
-        ctx.$message.error("开始日期不能晚于结束日期");
-        leaveForm.leaveTime = "0天";
+        proxy.$message.error('开始日期不能晚于结束日期');
+        leaveForm.leaveTime = '0天';
         setTimeout(() => {
-          leaveForm[key] = "";
+          leaveForm[key] = '';
         }, 0);
       } else {
         leaveForm.leaveTime =
-          (endTime - startTime) / (24 * 60 * 60 * 1000) + 1 + "天";
+          (endTime - startTime) / (24 * 60 * 60 * 1000) + 1 + '天';
       }
     };
     // 申请提交
@@ -337,10 +332,10 @@ export default {
           try {
             let params = { ...leaveForm, action: action.value };
             // debugger
-            console.log(99)
+            console.log(99);
             let res = await proxy.$api.leaveOperate(params);
             // debugger
-            ctx.$message.success("创建成功");
+            proxy.$message.success(`${params.action === 'edit' ? '修改' : '创建'}成功`);
             handleClose();
             getApplyList();
           } catch (error) {}
@@ -351,21 +346,21 @@ export default {
     const handleDetail = (row) => {
       let data = { ...row };
       data.applyTypeName = {
-        1: "事假",
-        2: "调休",
-        3: "年假",
+        1: '事假',
+        2: '调休',
+        3: '年假',
       }[data.applyType];
       data.time =
-        utils.formateDate(new Date(data.startTime), "yyyy-MM-dd") +
-        "到" +
-        utils.formateDate(new Date(data.endTime), "yyyy-MM-dd");
+        utils.formateDate(new Date(data.startTime), 'yyyy-MM-dd') +
+        '到' +
+        utils.formateDate(new Date(data.endTime), 'yyyy-MM-dd');
       // 1:待审批 2:审批中 3:审批拒绝 4:审批通过 5:作废
       data.applyStateName = {
-        1: "待审批",
-        2: "审批中",
-        3: "审批拒绝",
-        4: "审批通过",
-        5: "作废",
+        1: '待审批',
+        2: '审批中',
+        3: '审批拒绝',
+        4: '审批通过',
+        5: '作废',
       }[data.applyState];
       detail.value = data;
       showDetailModal.value = true;
@@ -373,9 +368,9 @@ export default {
 
     const handleDelete = async (_id) => {
       try {
-        let params = { _id, action: "delete" };
+        let params = { _id, action: 'delete' };
         let res = await proxy.$api.leaveOperate(params);
-        ctx.$message.success("删除成功");
+        proxy.$message.success('删除成功');
         getApplyList();
       } catch (error) {}
     };
