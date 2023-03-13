@@ -19,10 +19,10 @@ const EnvConfig = {
   },
 };
 // console.log('process.env', process.env)
-console.log('import.meta.env', import.meta.env);
+// console.log('import.meta.env', import.meta.env);
 export default {
   env,
-  mock: false, // false 链接数据卡， true 链接mock数据库
+  mock: false, // false 链接数据库， true 链接mock数据库
   namespace: 'manager',
   ...EnvConfig[env],
 };
