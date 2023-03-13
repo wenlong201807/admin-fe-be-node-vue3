@@ -25,22 +25,38 @@ service.interceptors.request.use((req) => {
 });
 
 // 响应拦截
-service.interceptors.response.use((res) => {
-  const { code, data, msg } = res.data;
+service.interceptors.response.use(
+  (res) => {
+    const { code, data, msg } = res.data;
+    console.log(code, 88);
+    if (code === 200) {
+      return data;
+    } else if (code === 500001) {
+      ElMessage.error(TOKEN_INVALID);
+      setTimeout(() => {
+        router.push('/login');
+      }, 500);
+      return Promise.reject(TOKEN_INVALID);
+    } else {
+      console.log(88);
+      ElMessage.error(msg || NETWORK_ERROR);
+      return Promise.reject(msg || NETWORK_ERROR);
+    }
+  },
+  (error) => {
+    if (error.message === 'Network Error' || error.message.includes('5')) {
+      // 跨域
+      ElMessage.error(error.message || NETWORK_ERROR);
+    }
 
-  if (code === 200) {
-    return data;
-  } else if (code === 500001) {
-    ElMessage.error(TOKEN_INVALID);
-    setTimeout(() => {
-      router.push('/login');
-    }, 500);
-    return Promise.reject(TOKEN_INVALID);
-  } else {
-    ElMessage.error(msg || NETWORK_ERROR);
-    return Promise.reject(msg || NETWORK_ERROR);
+    // 处理 503 网络异常
+    if (error.response.status === 503) {
+      ElMessage.error(error.response || NETWORK_ERROR);
+    }
+
+    return Promise.reject(new Error(error));
   }
-});
+);
 /**
  * 请求核心函数
  * @param {*} options 请求配置
