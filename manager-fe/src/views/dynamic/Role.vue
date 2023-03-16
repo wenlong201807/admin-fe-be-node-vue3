@@ -18,7 +18,7 @@
     <div class="base-table">
       <div class="action">
         <el-button type="primary" @click="handleAdd" v-has="'role-create'"
-          >创建</el-button
+          >新增</el-button
         >
       </div>
       <el-table :data="roleList">
@@ -44,7 +44,7 @@
               type="primary"
               @click="handleOpenPermission(scope.row)"
               v-has="'role-auth'"
-              >设置权限</el-button
+              >查看权限</el-button
             >
             <el-button
               type="danger"
@@ -114,8 +114,13 @@
       </el-form>
       <template #footer>
         <span class="dialog-footer">
-          <el-button @click="showPermission = false">取 消</el-button>
-          <el-button type="primary" @click="handlePermissionSubmit"
+          <el-button @click="showPermission = false" v-has="'role-auth-change'"
+            >取 消</el-button
+          >
+          <el-button
+            type="primary"
+            @click="handlePermissionSubmit"
+            v-has="'role-auth-change'"
             >确 定</el-button
           >
         </span>

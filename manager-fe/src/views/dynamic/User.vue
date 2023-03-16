@@ -2,9 +2,9 @@
   <div class="user-manage">
     <div class="query-form">
       <el-form ref="form" :inline="true" :model="user">
-        <el-form-item label="用户ID" prop="userId">
+        <!-- <el-form-item label="用户ID" prop="userId">
           <el-input v-model="user.userId" placeholder="请输入用户ID" />
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="用户名称" prop="userName">
           <el-input v-model="user.userName" placeholder="请输入用户名称" />
         </el-form-item>
@@ -205,10 +205,10 @@ export default {
     });
     // 定义动态表格-格式
     const columns = reactive([
-      {
-        label: '用户ID',
-        prop: 'userId',
-      },
+      // {
+      //   label: '用户ID',
+      //   prop: 'userId',
+      // },
       {
         label: '用户名',
         prop: 'userName',

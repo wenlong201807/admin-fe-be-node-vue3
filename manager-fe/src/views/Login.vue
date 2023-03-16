@@ -34,7 +34,7 @@ export default {
   data() {
     return {
       user: {
-        userName: 'admin',
+        userName: 'test',
         userPwd: '123456',
       },
       rules: {

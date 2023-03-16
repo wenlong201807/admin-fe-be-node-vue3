@@ -22,7 +22,8 @@ router.post('/login', async (ctx) => {
      * 2. {userId:1,_id:0} // 1代表返回，0代表不返回
      * 3. .select('userId')
      */
-    // console.log('md5(userPwd):', md5('123456'))
+    // console.log('md5(userPwd) super_admin:', md5('123456!@#$%^&*qaz'));
+    // console.log('md5(userPwd) other:', md5('123456'))
     const res = await User.findOne(
       {
         userName,
@@ -57,12 +58,15 @@ router.get('/list', async (ctx) => {
   const { userId, userName, state } = ctx.request.query;
   const { page, skipIndex } = util.pager(ctx.request.query);
   let params = {};
-  if (userId) params.userId = userId;
+  // if (userId) params.userId = userId;
   if (userName) params.userName = userName;
   if (state && state != '0') params.state = state;
   try {
     // 根据条件查询所有用户列表
-    const query = User.find(params, { _id: 0, userPwd: 0 }); // 排除掉的字段 { _id: 0, userPwd: 0 }
+    const query = User.find(
+      { ...params, state: { $ne: 4 } },
+      { _id: 0, userPwd: 0 }
+    ); // 排除掉的字段 { _id: 0, userPwd: 0 }
     const list = await query.skip(skipIndex).limit(page.pageSize);
     const total = await User.countDocuments(params);
 
@@ -81,7 +85,11 @@ router.get('/list', async (ctx) => {
 // 获取全量用户列表
 router.get('/all/list', async (ctx) => {
   try {
-    const list = await User.find({}, 'userId userName userEmail');
+    // 过滤掉 状态值 为 4 (已删除)
+    const list = await User.find(
+      { state: { $ne: 4 } },
+      'userId userName userEmail'
+    );
     ctx.body = util.success(list);
   } catch (error) {
     ctx.body = util.fail(error.stack);
@@ -94,7 +102,7 @@ router.post('/delete', async (ctx) => {
   // 待删除的用户Id数组
   const { userIds } = ctx.request.body;
   // User.updateMany({ $or: [{ userId: 10001 }, { userId: 10002 }] })
-  const res = await User.updateMany({ userId: { $in: userIds } }, { state: 2 }); // 被删除的数据标记为状态2 state: 2
+  const res = await User.updateMany({ userId: { $in: userIds } }, { state: 4 }); // 被删除的数据标记为状态4 state: 4
   if (res.nModified) {
     ctx.body = util.success(res, `共删除成功${res.nModified}条`);
     return;
@@ -138,7 +146,7 @@ router.post('/operate', async (ctx) => {
       const total = await User.countDocuments({});
       try {
         const user = new User({
-          userId: (total + 1) + '',
+          userId: total + 1 + '',
           // userId: doc._id,
           // userId: doc.sequence_value, // TODO
           userName,

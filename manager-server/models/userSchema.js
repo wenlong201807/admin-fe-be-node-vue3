@@ -11,7 +11,7 @@ const userSchema = mongoose.Schema({
   state: {
     type: Number,
     default: 1,
-  }, // 1: 在职 2: 离职 3: 试用期
+  }, // 1: 在职 2: 离职 3: 试用期 4 已经删除
   role: {
     type: Number,
     default: 1,
@@ -30,3 +30,20 @@ const userSchema = mongoose.Schema({
 
 // 第三个参数: 集合的名称
 module.exports = mongoose.model('users', userSchema, 'users');
+
+/**
+ userId: String, //用户ID，自增长
+  userName: 'admin', //用户名称
+  userPwd: 'e10adc3949ba59abbe56e057f20f883e', //用户密码，md5加密
+  userEmail: '666@qq.com', //用户邮箱
+  mobile: '18479783236', //手机号
+  sex: 1, //性别 0:男  1：女
+  deptId: [], //部门
+  job: '', //岗位
+  state: 1, // 1: 在职 2: 离职 3: 试用期
+  role: 1, // 用户角色 0：系统管理员  1： 普通用户  管理员才可以控制菜单
+  roleList: [], //系统角色 对应角色表中的_id
+  createTime: Date.now(), //创建时间
+  lastLoginTime: Date.now(), //更新时间
+  remark: '手动添加的',
+ */
