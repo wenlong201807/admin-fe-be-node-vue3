@@ -153,7 +153,7 @@ export default {
         {
           label: '权限列表',
           prop: 'permissionList',
-          width: 200,
+          width: 240,
           // 注意函数作用域问题 this的指向
           formatter: (row, column, value) => {
             let names = [];
@@ -168,6 +168,7 @@ export default {
         {
           label: '更新时间',
           prop: 'updateTime',
+          width: 180,
           formatter(row, column, value) {
             return utils.formateDate(new Date(value));
           },
@@ -175,6 +176,7 @@ export default {
         {
           label: '创建时间',
           prop: 'createTime',
+          width: 180,
           formatter(row, column, value) {
             return utils.formateDate(new Date(value));
           },

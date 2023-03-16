@@ -129,10 +129,12 @@ export default {
         {
           label: '更新时间',
           prop: 'updateTime',
+          width: 180,
         },
         {
           label: '创建时间',
           prop: 'createTime',
+          width: 180,
         },
       ],
       deptList: [],

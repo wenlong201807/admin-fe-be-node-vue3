@@ -65,7 +65,10 @@
 
       <div :style="{ height: '30px' }"></div>
     </div>
-    <el-dialog :title="`${action === 'create' ? '新增' : '编辑'}菜单`" v-model="showModal">
+    <el-dialog
+      :title="`${action === 'create' ? '新增' : '编辑'}菜单`"
+      v-model="showModal"
+    >
       <el-form
         ref="dialogForm"
         :model="menuForm"
@@ -194,6 +197,7 @@ export default {
         {
           label: '创建时间',
           prop: 'createTime',
+          width: 180,
           formatter(row, column, value) {
             return utils.formateDate(new Date(value));
           },

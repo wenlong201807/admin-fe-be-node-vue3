@@ -132,6 +132,7 @@ export default {
     color: #fff;
     overflow-y: auto;
     transition: width 0.5s;
+    z-index: 2;
     .logo {
       display: flex;
       justify-content: center;

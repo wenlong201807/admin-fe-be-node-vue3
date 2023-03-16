@@ -216,10 +216,12 @@ export default {
       {
         label: '手机号',
         prop: 'mobile',
+        width: 100,
       },
       {
         label: '用户邮箱',
         prop: 'userEmail',
+        width: 120,
       },
       {
         label: '用户角色',
