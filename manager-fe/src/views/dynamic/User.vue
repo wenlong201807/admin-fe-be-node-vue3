@@ -17,8 +17,8 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="handleQuery">查询</el-button>
-          <el-button @click="handleReset('form')">重置</el-button>
+          <el-button type="primary" @click="handleQuery" v-has="'user-query'">查询</el-button>
+          <el-button @click="handleReset('form')" v-has="'user-reset'">重置</el-button>
         </el-form-item>
       </el-form>
     </div>

@@ -3,7 +3,7 @@
     <div :class="['nav-side', isCollapse ? 'fold' : 'unfold']">
       <!-- 系统LOGO -->
       <div class="logo">
-        <img src="./../assets/logo.png" />
+        <!-- <img src="./../assets/logo.png" /> -->
         <span>通用后台系统</span>
       </div>
       <!-- 导航菜单 -->
@@ -134,6 +134,7 @@ export default {
     transition: width 0.5s;
     .logo {
       display: flex;
+      justify-content: center;
       align-items: center;
       font-size: 18px;
       height: 50px;
