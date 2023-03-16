@@ -5,6 +5,7 @@
   "scripts": {
     "start": "NODE_ENV=dev node bin/www",
     "dev": "NODE_ENV=dev ./node_modules/.bin/nodemon bin/www",
+    "build_node": "NODE_ENV=prod node bin/www",
     "build": "NODE_ENV=prod pm2 start bin/www"
   },
   "dependencies": {

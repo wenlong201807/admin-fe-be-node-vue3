@@ -41,7 +41,7 @@ nginx  /etc/nginx
 资源位置 /opt/
 mongodb linux mongo mongo
 
-
+ 47.98.181.79:6011
 # 587 全栈nodejs mysql全栈
 1、
 2、56.00

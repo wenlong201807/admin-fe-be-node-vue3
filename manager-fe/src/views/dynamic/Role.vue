@@ -95,7 +95,11 @@
       </template>
     </el-dialog>
     <!-- 权限弹框-->
-    <el-dialog title="权限设置" v-model="showPermission">
+    <el-dialog
+      title="权限设置"
+      v-model="showPermission"
+      custom-class="auth_model_wrap"
+    >
       <el-form label-width="100px">
         <el-form-item label="角色名称">
           {{ curRoleName }}
@@ -337,4 +341,11 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.auth_model_wrap {
+  .el-dialog__body {
+    max-height: 500px;
+    overflow: auto;
+  }
+}
+</style>
