@@ -16,6 +16,7 @@ router.prefix('/users');
 router.post('/login', async (ctx) => {
   try {
     const { userName, userPwd } = ctx.request.body; // post 参数获取方式
+    console.log('userName, userPwd----', userName, userPwd)
     /**
      * 返回数据库指定字段，有三种方式
      * 1. 'userId userName userEmail state role deptId roleList'
@@ -32,6 +33,7 @@ router.post('/login', async (ctx) => {
       },
       'userId userName userEmail state role deptId roleList'
     );
+    console.log('----', res)
 
     if (res) {
       const data = res._doc; // 这些是数据库返回的 ._doc 信息，也是前端需要的数据信息
@@ -64,7 +66,7 @@ router.get('/list', async (ctx) => {
   try {
     // 根据条件查询所有用户列表
     const query = User.find(
-      { ...params, state: { $ne: 4 } },
+      { ...params, remark: { $ne: '手动添加的' } },
       { _id: 0, userPwd: 0 }
     ); // 排除掉的字段 { _id: 0, userPwd: 0 }
     const list = await query.skip(skipIndex).limit(page.pageSize);
