@@ -131,6 +131,14 @@ export default {
       mock: false,
     });
   },
+  uploadPicApi(params) {
+    return request({
+      url: '/leave/upload',
+      method: 'post',
+      data: params,
+      mock: false,
+    });
+  },
   leaveOperate(params) {
     return request({
       url: '/leave/operate',

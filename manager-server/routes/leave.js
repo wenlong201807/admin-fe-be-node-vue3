@@ -8,6 +8,24 @@ const util = require('../utils/util');
 
 router.prefix('/leave');
 
+// 上传文件
+router.post('/upload', async (ctx) => {
+  console.log('----3:', ctx.request.files);
+
+  const { mimetype, filePath, size, mtime, originalFilename, newFilename } =
+    ctx.request.files.file;
+
+  ctx.body = util.success({
+    mimetype,
+    filePath,
+    size,
+    mtime,
+    originalFilename,
+    newFilename,
+    kk: ctx.request.files,
+  });
+});
+
 // 查询申请列表
 router.get('/list', async (ctx) => {
   const { applyState, type } = ctx.request.query;

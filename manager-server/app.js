@@ -9,6 +9,9 @@ const log4js = require('./utils/log4j');
 const router = require('koa-router')();
 const jwt = require('jsonwebtoken');
 const koajwt = require('koa-jwt');
+
+const { koaBody }  = require('koa-body');
+
 const util = require('./utils/util');
 const constance = require('./utils/constance');
 const users = require('./routes/users');
@@ -23,6 +26,19 @@ onerror(app);
 
 // 连接数据库
 require('./config/db');
+
+// 存储上传的头像文件，也是静态资源 /2.png
+app.use(koaStatic(path.join(__dirname, '..', 'uploadFiles')))
+
+// 接收post参数解析，写在路由的前面
+app.use(
+  koaBody({
+    multipart: true, // 支持多个文件同时上传
+    onFileBegin: (name, file) => {
+      console.log('name, file:', name, file)
+    }
+  })
+);
 
 // middlewares
 app.use(
@@ -45,10 +61,9 @@ app.use(
 
 // logger
 app.use(async (ctx, next) => {
-  // 未生效
-  ctx.set('Access-Control-Allow-Origin', '*');
-  ctx.set('Access-Control-Allow-Headers', 'content-type');
-  ctx.set('Access-Control-Allow-Methods', 'OPTIONS,GET,PUT,POST,DELETE');
+  console.log('ctx.request.files:99', ctx.request.files)
+  console.log('ctx.request.body.files:77', ctx.request.body.files)
+
 
   log4js.info(`参数: get params:${JSON.stringify(ctx.request.query, null, 2)}`);
   log4js.info(`参数: post params:${JSON.stringify(ctx.request.body, null, 2)}`);
