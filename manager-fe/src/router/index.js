@@ -23,6 +23,14 @@ const routes = [
         component: () => import('@/views/Welcome.vue'),
       },
       {
+        name: 'common/upload',
+        path: '/common/upload',
+        meta: {
+          title: '文件上传',
+        },
+        component: () => import('../views/common/Upload.vue'),
+      },
+      {
         name: 'system/user',
         path: '/system/user',
         meta: {

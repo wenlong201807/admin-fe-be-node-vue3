@@ -1,3 +1,4 @@
+const path = require('path')
 const Koa = require('koa');
 const app = new Koa();
 const views = require('koa-views');
@@ -9,7 +10,7 @@ const log4js = require('./utils/log4j');
 const router = require('koa-router')();
 const jwt = require('jsonwebtoken');
 const koajwt = require('koa-jwt');
-
+const koaStatic = require('koa-static')
 const { koaBody }  = require('koa-body');
 
 const util = require('./utils/util');
@@ -28,7 +29,7 @@ onerror(app);
 require('./config/db');
 
 // 存储上传的头像文件，也是静态资源 /2.png
-app.use(koaStatic(path.join(__dirname, '..', 'uploadFiles')))
+app.use(koaStatic(path.join(__dirname + '/uploadFiles')))
 
 // 接收post参数解析，写在路由的前面
 app.use(
@@ -61,10 +62,6 @@ app.use(
 
 // logger
 app.use(async (ctx, next) => {
-  console.log('ctx.request.files:99', ctx.request.files)
-  console.log('ctx.request.body.files:77', ctx.request.body.files)
-
-
   log4js.info(`参数: get params:${JSON.stringify(ctx.request.query, null, 2)}`);
   log4js.info(`参数: post params:${JSON.stringify(ctx.request.body, null, 2)}`);
   await next().catch((err) => {
@@ -79,7 +76,6 @@ app.use(async (ctx, next) => {
 
 // 心跳检测
 router.get('/heart', (ctx) => {
-  console.log('心跳检测', 77);
   ctx.body = '有心跳的';
 });
 

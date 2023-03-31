@@ -5,25 +5,37 @@ const router = require('koa-router')();
 const Leave = require('../models/leaveSchema');
 const Dept = require('../models/deptSchema');
 const util = require('../utils/util');
+const { saveFile } = require('../utils/saveFile');
 
 router.prefix('/leave');
 
 // 上传文件
 router.post('/upload', async (ctx) => {
-  console.log('----3:', ctx.request.files);
+  // console.log('文件参数获取:', ctx.request.files.file);
 
-  const { mimetype, filePath, size, mtime, originalFilename, newFilename } =
+  const { mimetype, filepath, size, originalFilename, newFilename } =
     ctx.request.files.file;
 
-  ctx.body = util.success({
+  console.log(
+    '--接口前端文件参数:',
     mimetype,
-    filePath,
+    filepath,
     size,
-    mtime,
     originalFilename,
-    newFilename,
-    kk: ctx.request.files,
+    newFilename
+  );
+
+  if (!originalFilename) {
+    return;
+  }
+  const fileR = await saveFile({
+    name: originalFilename,
+    newName: newFilename,
+    type: mimetype,
+    size,
+    filePath: filepath,
   });
+  ctx.body = util.success(fileR);
 });
 
 // 查询申请列表
