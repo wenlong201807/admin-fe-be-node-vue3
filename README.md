@@ -69,3 +69,6 @@ mongodb linux mongo mongo
 
 - mac 本地启动mysql
   + mysql.server start
+
+- linux 安装 nvm
+  + https://gist.github.com/d2s/372b5943bce17b964a79
